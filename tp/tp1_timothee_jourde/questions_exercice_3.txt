@@ -1,3 +1,0 @@
-1. Si les drones ayant terminés leur mission sont amenés à devoir remplacer un drone défectueux il peut être préférable de les maintenir proche de la zone de mission. Sinon ils peuvent rentrer à la station.
-
-2. Étant beaucoup plus rapide, le drone aérien arrivera certainement en premier.
