@@ -1,6 +1,11 @@
 
 public class Marin extends Drone
 {
+   public Marin(Station s)
+   {
+      super(s);
+   }
+   
    @Override
    public boolean isValidPosition(Vector3 pos)
    {

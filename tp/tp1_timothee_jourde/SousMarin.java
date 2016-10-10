@@ -1,6 +1,11 @@
 
 public class SousMarin extends Drone
 {
+   public SousMarin(Station s)
+   {
+      super(s);
+   }
+   
    @Override
    public boolean isValidPosition(Vector3 pos)
    {

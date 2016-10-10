@@ -7,6 +7,8 @@ public class Exercices_1_2
 {
    public static void main(String[] args)
    {
+      System.out.println("=== Exercice 1 et 2:\n");
+      
       Scanner in = new Scanner(System.in);
 
       System.out.print("Saisissez un entier: ");      

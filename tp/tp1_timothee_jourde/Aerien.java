@@ -1,6 +1,11 @@
 
 public class Aerien extends Drone
 {
+   public Aerien(Station s)
+   {
+      super(s);
+   }
+   
    @Override
    public boolean isValidPosition(Vector3 pos)
    {
