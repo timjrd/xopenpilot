@@ -3,12 +3,13 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 
 public class Server
 {
-   static public void main(String[] args) throws IOException
+   static public void main(String[] args) throws IOException, ClassNotFoundException
    {
       ServerSocket serverSocket = new ServerSocket(9042);
 
@@ -29,6 +30,11 @@ public class Server
          // on envoi la réponse au client
          out.write( a + b );
 
+         ObjectInputStream oin = new ObjectInputStream(in);
+         Object o = oin.readObject();
+
+         System.out.println("[SERVER] " + o.toString());
+         
          socket.close();
       }
 

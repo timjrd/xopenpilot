@@ -3,6 +3,7 @@ import java.net.UnknownHostException;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.ObjectOutputStream;
 import java.io.IOException;
 
 public class Client
@@ -11,7 +12,7 @@ public class Client
    {
       if (args.length != 2)
       {
-         System.out.println("2 arguments requis: entier_a entier_b");
+         System.out.println("[CLIENT] 2 arguments requis: entier_a entier_b");
          return;
       }
       
@@ -30,7 +31,12 @@ public class Client
       int response = in.read();
 
       // on affiche la réponse
-      System.out.println( "réponse: " + response );
+      System.out.println( "[CLIENT] réponse: " + response );
+
+      Object o = new MyObject("client0");
+      ObjectOutputStream oout = new ObjectOutputStream(out);
+
+      oout.writeObject(o);
       
       socket.close();
    }

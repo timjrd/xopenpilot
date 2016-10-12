@@ -74,3 +74,12 @@ section footer a:hover
 {
     background-color: white;
 }
+
+section > div
+{
+    display: none;
+}
+section > div.expand
+{
+    display: block;
+}

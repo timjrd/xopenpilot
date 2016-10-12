@@ -2,6 +2,8 @@
 
 javac *.java
 
-java Server 2> /dev/null
+java Server 2> /dev/null &
 
-java Client $*
+java Client 42 2
+
+sleep 2
