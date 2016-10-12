@@ -2,7 +2,7 @@
 
 javac *.java
 
-java Server 2> /dev/null &
+java Server &
 
 java Client 42 2
 

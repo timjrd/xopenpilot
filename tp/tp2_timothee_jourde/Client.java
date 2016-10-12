@@ -17,7 +17,7 @@ public class Client
       }
       
       // on initialise la connection
-      Socket socket = new Socket("localhost", 9042);
+      Socket socket = new Socket("localhost", 9742);
 
       // on récupère les flux d'entrée/sortie de la connection avec le server
       InputStream  in  = socket.getInputStream();
