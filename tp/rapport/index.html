@@ -66,6 +66,33 @@
         </section>
 
 
+        <section>
+            <h2><em>TP 3 :</em> Contrôle d'accès</h2>
+
+            <div>
+                <p>
+                    L'objectif de ce TP est de réaliser une simulation de gestion d'accès à une salle. Il y a deux points de contrôles (qui seront plus tard des lecteurs RFID) : un d'entrée et un de sortie.
+                </p>
+
+                <p>
+                    Le système de contrôle d'accès repose sur une architecture client-serveur (voir TP2). Le serveur enregistre les identifiants correspondants aux personnes présentes dans la salle. <br />
+
+                    À chaque fois qu'une personne présente son badge au point de contrôle d'entrée, le lecteur se connecte au serveur en tant que client et envoi l'identifiant du badge. Si cet identifiant n'est pas déjà présent dans la salle, le serveur l'enregistre et envoi une réponse positive au lecteur : la personne est autorisée à entrer. Sinon la réponse est négative et la personne n'est pas autorisée à entrer. <br />
+
+                    À chaque fois qu'une personne présente son badge au point de sortie, le lecteur se connecte au serveur et envoi l'identifiant du badge : le serveur désenregistre alors l'identifiant (pour qu'il puisse entrer à nouveau).
+                </p>
+
+                <p>Vous pouvez exécuter run.sh .</p>
+
+            </div>
+            
+            <footer>
+                <a href="https://github.com/timjrd/xopenpilot/tree/master/tp/tp3_timothee_jourde">voir les sources</a>
+                <a href="https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/timjrd/xopenpilot/tree/master/tp/tp3_timothee_jourde">télécharger les sources</a>
+            </footer>
+        </section>
+
+
         
         <script>
          function fold(content)
