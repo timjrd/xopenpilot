@@ -75,10 +75,15 @@
                 </p>
 
                 <p>
-                    Le système de contrôle d'accès repose sur une architecture client-serveur (voir TP2). Le serveur enregistre les identifiants correspondants aux personnes présentes dans la salle. <br />
+                    Le système de contrôle d'accès repose sur une architecture client-serveur (voir TP2). Le serveur enregistre les identifiants correspondants aux personnes présentes dans la salle.
+                </p>
 
-                    À chaque fois qu'une personne présente son badge au point de contrôle d'entrée, le lecteur se connecte au serveur en tant que client et envoi l'identifiant du badge. Si cet identifiant n'est pas déjà présent dans la salle, le serveur l'enregistre et envoi une réponse positive au lecteur : la personne est autorisée à entrer. Sinon la réponse est négative et la personne n'est pas autorisée à entrer. <br />
+                <p>
 
+                    À chaque fois qu'une personne présente son badge au point de contrôle d'entrée, le lecteur se connecte au serveur et envoi l'identifiant du badge. Si cet identifiant n'est pas déjà présent dans la salle, le serveur l'enregistre et envoi une réponse positive au lecteur : la personne est autorisée à entrer. Sinon la réponse est négative et la personne n'est pas autorisée à entrer.
+                </p>
+
+                <p>
                     À chaque fois qu'une personne présente son badge au point de sortie, le lecteur se connecte au serveur et envoi l'identifiant du badge : le serveur désenregistre alors l'identifiant (pour qu'il puisse entrer à nouveau).
                 </p>
 
