@@ -18,6 +18,6 @@ public class Test
       InputStream in = port.getInputStream();
       OutputStream out = port.getOutputStream();
 
-      out.write(0xFE);
+      out.write(0xFD);
    }
 }

@@ -97,6 +97,35 @@
             </footer>
         </section>
 
+        
+        <section>
+            <h2><em>TP 4 :</em> Communication avec un lecteur RFID</h2>
+
+            <div>
+                <h3>Description de la procédure :</h3>
+                <ol>
+                    <li>connecter l'interface RS232 sur l'antenne</li>
+                    <li>connecter le lecteur sur l'ordinateur à l'aide de l'adaptateur RS232-USB</li>
+                    <li>brancher l'alimentation du lecteur</li>
+                    <li>ouvrir la session linux</li>
+                    <li>télécharger la bibliothèque rxtx : placer les fichiers RXTXcomm.jar et librxtxSerial.so dans le répertoire courant</li>
+                    <li>compiler le programme (voir le code source) en ajoutant RXTXcomm.jar dans le classpath</li>
+                    <li>ajouter le répertoire courant à la variable d'environnement LD_LIBRARY_PATH</li>
+                    <li>lancer le programme (voir run.sh)</li>
+                </ol>
+
+                <p>Vous pouvez tester l'exemple en exécutant :</p>
+                <pre><code>
+                    run.sh /dev/tty*
+                </code></pre>
+            </div>
+            
+            <footer>
+                <a href="https://github.com/timjrd/xopenpilot/tree/master/tp/tp4_timothee_jourde">voir les sources</a>
+                <a href="https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/timjrd/xopenpilot/tree/master/tp/tp4_timothee_jourde">télécharger les sources</a>
+            </footer>
+        </section>
+
 
         
         <script>
