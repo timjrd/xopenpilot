@@ -1,0 +1,6 @@
+
+public enum Protocol
+{
+   SEND_MESSAGE, SENT,
+   RETRIEVE_MESSAGES_SINCE_DATE
+}
