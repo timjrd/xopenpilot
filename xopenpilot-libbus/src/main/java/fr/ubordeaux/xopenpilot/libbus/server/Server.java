@@ -7,12 +7,12 @@ import java.io.*;
 
 public class Server
 {
-   public interface MessageHandler
+   static public interface MessageHandler
    {
       public String messageReceived(String messageLine);
    }
    
-   public static void serve(int port, MessageHandler handler) throws IOException, ClosedChannelException
+   static public void serve(int port, MessageHandler handler) throws IOException, ClosedChannelException
    {
       Selector selector = Selector.open();
       

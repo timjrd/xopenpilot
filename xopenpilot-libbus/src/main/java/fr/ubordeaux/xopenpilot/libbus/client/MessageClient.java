@@ -6,13 +6,22 @@ import javax.json.*;
 
 public class MessageClient
 {
+   private Date date;
+   private JsonValue content;
+
+   MessageClient(Date date, JsonValue content)
+   {
+      this.date    = date;
+      this.content = content;
+   }
+   
    public Date getDate()
    {
-      return new Date();
+      return date;
    }
 
    public JsonValue getContent()
    {
-      return null;
+      return content;
    }
 }
