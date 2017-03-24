@@ -8,7 +8,6 @@ import javax.json.*;
  */
 public interface Bus
 {
-	//test
    /*
      Retourne un identifiant unique.
     */
