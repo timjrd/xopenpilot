@@ -91,19 +91,19 @@ public class MessageHandler implements Server.MessageHandler {
 	public String messageReceived(String messageLine) {
 		String type;
 	    JsonObject messageObject = Json.createReader(new StringReader(messageLine)).readObject();
-	    //messageObject.getString("type") == "register";
+	    //messageObject.getString("type").equals("register");
 	    type = messageObject.getString("type");
-		if (type == "register")
+                if (type.equals("register"))
 			return register(messageObject);
-		if (type == "deregister")
+		if (type.equals("deregister"))
 			return deregister(messageObject);
-		if(type == "list")
+		if(type.equals("list"))
 			return list(messageObject);
-		if(type == "send")
+		if(type.equals("send"))
 			return send(messageObject);
-		if(type == "get")
+		if(type.equals("get"))
 			return get(messageObject);
-		if(type == "get_last")
+		if(type.equals("get_last"))
 			return getLast(messageObject);
 		/*if type == etc etc return methode*/
 			
