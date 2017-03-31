@@ -6,18 +6,29 @@ import javax.json.*;
 
 public class MessageServer
 {
+   private Date      date;
+   private JsonValue content;
+   private int       id;
+
+   public MessageServer(Date date, JsonValue content, int id)
+   {
+      this.date    = date;
+      this.content = content;
+      this.id      = id;
+   }
+   
    public Date getDate()
    {
-      return new Date();
+      return date;
    }
 
    public JsonValue getContent()
    {
-      return null;
+      return content;
    }
 
    public int getId()
    {
-      return 0;
+      return id;
    }
 }
