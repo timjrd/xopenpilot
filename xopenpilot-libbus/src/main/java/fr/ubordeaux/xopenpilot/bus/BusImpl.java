@@ -20,22 +20,25 @@ public class BusImpl implements Bus
    @Override
    public int  registerSender(String senderClass, String senderName)
    {
-      nextSenderId++;
-      
       if (nextSenderId >= maxSenderId)
       {
+         log("unable to register new sender: too much senders.");
          return -1;
       }
       else
       {
-         senderById.put(nextSenderId, new Sender(senderClass, senderName, nextSenderId));
-         return nextSenderId;
+         int newId = nextSenderId;
+         log("registering new sender " + newId + ".");
+         senderById.put(newId, new Sender(senderClass, senderName, newId));
+         nextSenderId++;
+         return newId;
       }
    }
 
    @Override
    public void deregisterSender(int senderId)
    {
+      log("deregistering sender " + senderId + ".");
       senderById.remove(senderId);
    }
 
@@ -47,7 +50,11 @@ public class BusImpl implements Bus
    {
       Sender sender = senderById.get(senderId);
 
-      if (sender != null)
+      if (sender == null)
+      {
+         log("message received from unknown sender " + senderId + ".");
+      }
+      else
          sender.addMessage(messageContent);
    }
 
@@ -64,6 +71,9 @@ public class BusImpl implements Bus
          if (sender.match(senderClass, senderName))
             result.add( sender.senderInfo() );
 
+      String senderClassStr = (senderClass == null) ? "any" : "\"" + senderClass + "\"";
+      String senderNameStr  = (senderName  == null) ? "any" : "\"" + senderName + "\"";
+      log("requesting sender list with class=" + senderClassStr + " and name=" + senderNameStr + ", sending back " + result.size() + " results.");
       return (SenderInfoServer[]) result.toArray();
    }
 
@@ -73,13 +83,37 @@ public class BusImpl implements Bus
    @Override
    public MessageServer getMessage(int senderId, int messageId)
    {
-      return null;
+      Sender sender = senderById.get(senderId);
+
+      if (sender == null)
+      {
+         log("requesting message from inexistent sender " + senderId + ". sending back nothing.");
+         return null;
+      }
+      else
+      {
+         return sender.getMessage(messageId);
+      }
    }
 
    @Override
    public MessageServer getLastMessage(int senderId)
    {
-      return null;
+      Sender sender = senderById.get(senderId);
+
+      if (sender == null)
+      {
+         log("requesting last message from inexistent sender " + senderId + ". sending back nothing.");
+         return null;
+      }
+      else
+      {
+         return sender.getLastMessage();
+      }
    }
 
+   private void log(String str)
+   {
+      System.out.println("Bus: " + str);
+   }
 }
