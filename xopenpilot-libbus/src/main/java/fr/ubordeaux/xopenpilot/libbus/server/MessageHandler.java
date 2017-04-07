@@ -3,6 +3,9 @@ package fr.ubordeaux.xopenpilot.libbus.server;
 import java.io.StringReader;
 
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
@@ -15,6 +18,21 @@ public class MessageHandler implements Server.MessageHandler {
 	}
 	/*a faire, une methode pour ack, JsonObject , cas d'erreur possible*/
 	
+	public JsonObject ack_ok(){
+		JsonObject response = Json.createObjectBuilder()
+				.add("resp", "ok")
+				.build();
+		return response;
+	}
+	
+	public JsonObject ack_error(int error_id){
+		JsonObject response = Json.createObjectBuilder()
+				.add("resp", "error")
+				.add("error_id", error_id)
+				.build();
+		return response;
+	}
+	
 	public String getStringIfPresent(JsonObject messageObject, String key){
 		JsonValue value = messageObject.get(key);
 		if(value != null)
@@ -23,12 +41,11 @@ public class MessageHandler implements Server.MessageHandler {
 	}
 	
 	public String register(JsonObject messageObject){
-		this.bus.registerSender(messageObject.getString("sender_class"), messageObject.getString("sender_name"));
+		int id = this.bus.registerSender(messageObject.getString("sender_class"), messageObject.getString("sender_name"));
 		JsonObject response = Json.createObjectBuilder()
 				.add("type", "register")
 				.add("sender_id", 1)
-				.add("ack", Json.createObjectBuilder()
-						.add("resp", "ok"))
+				.add("ack", (id  == -1)? ack_error(400) :ack_ok())
 				.build();		
 		return response.toString();
 	}
@@ -46,9 +63,23 @@ public class MessageHandler implements Server.MessageHandler {
 	public String list(JsonObject messageObject){
 		String sender_class = getStringIfPresent(messageObject, "sender_class");
 		String sender_name = getStringIfPresent(messageObject, "sender_name");
-		
-		/*a finir, create arrayBuilder*/
-		return null;
+		JsonBuilderFactory factory = Json.createBuilderFactory(messageObject);
+		SenderInfoServer[] list_senders = this.bus.listSenders(sender_class, sender_name);
+		JsonArrayBuilder result = factory.createArrayBuilder();
+		for(SenderInfoServer sender : list_senders){
+			result.add(factory.createObjectBuilder()
+					.add("sender_id", sender.getSenderId())
+					.add("sender_class", sender.getSenderClass())
+					.add("sender_name", sender.getSenderName())
+					.add("last_message_id", sender.getLastMessageId()));
+		}
+		JsonObject response = Json.createObjectBuilder()
+				.add("type", "list")
+				.add("ack", Json.createObjectBuilder()
+						.add("resp", "ok"))
+				.add("result", result)
+				.build();
+		return response.toString();
 	}
 	
 	public String send(JsonObject messageObject){
@@ -63,10 +94,16 @@ public class MessageHandler implements Server.MessageHandler {
 	
 	public String get(JsonObject messageObject){
 		MessageServer messageServer = this.bus.getMessage(messageObject.getInt("sender_id"), messageObject.getInt("msg_id"));
+		if(messageServer == null){
+			JsonObject response = Json.createObjectBuilder()
+					.add("type", "get")
+					.add("ack", ack_error(400))
+					.build();
+			return response.toString();			
+		}
 		JsonObject response = Json.createObjectBuilder()
 				.add("type", "get")
-				.add("ack", Json.createObjectBuilder()
-						.add("resp", "ok"))
+				.add("ack", ack_ok())
 				.add("msg_id", messageServer.getId())
 				.add("date", messageServer.getDate().getTime())
 				.add("contents", messageServer.getContent())
@@ -76,10 +113,16 @@ public class MessageHandler implements Server.MessageHandler {
 	
 	public String getLast(JsonObject messageObject){
 		MessageServer messageServer = this.bus.getLastMessage(messageObject.getInt("sender_id"));
+		if(messageServer == null){
+			JsonObject response = Json.createObjectBuilder()
+					.add("type", "get_last")
+					.add("ack", ack_error(400))
+					.build();
+			return response.toString();
+		}
 		JsonObject response = Json.createObjectBuilder()
 				.add("type", "get_last")
-				.add("ack", Json.createObjectBuilder()
-						.add("resp", "ok"))
+				.add("ack", ack_ok())
 				.add("msg_id", messageServer.getId())
 				.add("date", messageServer.getDate().getTime())
 				.add("contents", messageServer.getContent())
@@ -91,7 +134,6 @@ public class MessageHandler implements Server.MessageHandler {
 	public String messageReceived(String messageLine) {
 		String type;
 	    JsonObject messageObject = Json.createReader(new StringReader(messageLine)).readObject();
-	    //messageObject.getString("type").equals("register");
 	    type = messageObject.getString("type");
                 if (type.equals("register"))
 			return register(messageObject);
@@ -104,9 +146,7 @@ public class MessageHandler implements Server.MessageHandler {
 		if(type.equals("get"))
 			return get(messageObject);
 		if(type.equals("get_last"))
-			return getLast(messageObject);
-		/*if type == etc etc return methode*/
-			
+			return getLast(messageObject);			
 		return null;
 	}
 	
