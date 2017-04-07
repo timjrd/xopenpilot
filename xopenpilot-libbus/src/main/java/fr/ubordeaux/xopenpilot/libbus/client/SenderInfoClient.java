@@ -50,13 +50,18 @@ public class SenderInfoClient
 
       JsonObject responseObject = Json.createReader(new StringReader(response)).readObject();
 
-      int       messageId = responseObject.getInt("msg_id");
-      long      date      = responseObject.getJsonNumber("date").longValue();
-      JsonValue content   = responseObject.get("contents");
+      if (RemoteBus.responseError(responseObject))
+         return null;
+      else
+      {
+         int       messageId = responseObject.getInt("msg_id");
+         long      date      = responseObject.getJsonNumber("date").longValue();
+         JsonValue content   = responseObject.get("contents");
 
-      nextMessageId = messageId + 1;
-      
-      return new MessageClient(new Date(date), content);
+         nextMessageId = messageId + 1;
+
+         return new MessageClient(new Date(date), content);
+      }
    }
 
    public MessageClient getLastMessage() throws IOException
@@ -70,9 +75,14 @@ public class SenderInfoClient
 
       JsonObject responseObject = Json.createReader(new StringReader(response)).readObject();
 
-      long      date    = responseObject.getJsonNumber("date").longValue();
-      JsonValue content = responseObject.get("contents");
+      if (RemoteBus.responseError(responseObject))
+         return null;
+      else
+      {
+         long      date    = responseObject.getJsonNumber("date").longValue();
+         JsonValue content = responseObject.get("contents");
       
-      return new MessageClient(new Date(date), content);
+         return new MessageClient(new Date(date), content);
+      }
    }
 }

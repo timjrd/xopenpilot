@@ -9,6 +9,11 @@ import javax.json.*;
 public class RemoteBus
 {
    private RemoteServer remoteServer;
+
+   static boolean responseError(JsonObject response)
+   {
+      return response.getJsonObject("ack").getString("resp").equals("error");
+   }
    
    public RemoteBus(String hostname, int port) throws IOException
    {
@@ -31,9 +36,14 @@ public class RemoteBus
       String response = remoteServer.send(message.toString());
 
       JsonObject responseObject = Json.createReader(new StringReader(response)).readObject();
-      int id = responseObject.getInt("sender_id");
-      
-      return new Sender(remoteServer, id);
+
+      if (responseError(responseObject))
+         return null;
+      else
+      {
+         int id = responseObject.getInt("sender_id");
+         return new Sender(remoteServer, id);
+      }
    }
 
    
