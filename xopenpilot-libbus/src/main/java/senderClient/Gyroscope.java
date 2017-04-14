@@ -83,6 +83,7 @@ public class Gyroscope {
 		}
 	}
 	
+	
 	public void close() throws IOException{
 		if (sender != null){
 			sender.deregister();

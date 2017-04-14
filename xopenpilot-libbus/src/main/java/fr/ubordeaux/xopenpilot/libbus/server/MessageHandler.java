@@ -16,7 +16,6 @@ public class MessageHandler implements Server.MessageHandler {
 	public MessageHandler(Bus bus){
 		this.bus = bus;
 	}
-	/*a faire, une methode pour ack, JsonObject , cas d'erreur possible*/
 	
 	public JsonObject ack_ok(){
 		JsonObject response = Json.createObjectBuilder()
