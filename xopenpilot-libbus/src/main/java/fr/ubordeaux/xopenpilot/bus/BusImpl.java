@@ -30,6 +30,7 @@ public class BusImpl implements Bus
          int newId = nextSenderId;
          log("registering new sender " + newId + ".");
          senderById.put(newId, new Sender(senderClass, senderName, newId));
+         
          nextSenderId++;
          return newId;
       }
@@ -74,7 +75,9 @@ public class BusImpl implements Bus
       String senderClassStr = (senderClass == null) ? "any" : "\"" + senderClass + "\"";
       String senderNameStr  = (senderName  == null) ? "any" : "\"" + senderName + "\"";
       log("requesting sender list with class=" + senderClassStr + " and name=" + senderNameStr + ", sending back " + result.size() + " results.");
-      return (SenderInfoServer[]) result.toArray();
+
+      SenderInfoServer[] result_ = new SenderInfoServer[result.size()];
+      return result.toArray(result_);
    }
 
    /*
