@@ -24,11 +24,14 @@ public class Server
       while(true)
       {
          System.out.println("\n[Server] SELECT");
+         
          int n = selector.select();
+         
          if (n > 0)
          {
-            Set<SelectionKey> selectedKeys = selector.selectedKeys();
-            for (SelectionKey key : selectedKeys)
+            List<SelectionKey> selectedKeysCopy = new ArrayList<>(selector.selectedKeys());
+            
+            for (SelectionKey key : selectedKeysCopy)
             {
                if ( key.isAcceptable() )
                {
@@ -52,7 +55,7 @@ public class Server
                   Socket s = clientSocket.socket();
                   
                   String message = new BufferedReader( new InputStreamReader(s.getInputStream()) ).readLine();
-
+                  
                   if (message == null)
                   {
                      // Connection closed
@@ -72,7 +75,7 @@ public class Server
                }
             }
 
-            selectedKeys.clear();
+            selector.selectedKeys().clear();
          }
       }
    }
