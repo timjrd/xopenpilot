@@ -30,4 +30,25 @@
     
   </dependencies>
   
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+                <execution>
+                    <id>gyroscope</id>
+                    <goals>
+                        <goal>java</goal>
+                    </goals>
+                    <configuration>
+                        <mainClass>senderClient.Gyroscope</mainClass>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+ </build>
+ 
 </project>
