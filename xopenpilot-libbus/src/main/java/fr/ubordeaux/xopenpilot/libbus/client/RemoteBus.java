@@ -8,6 +8,8 @@ import javax.json.*;
 
 public class RemoteBus
 {
+   static public final int DEFAULT_PORT = 7182;
+   
    private RemoteServer remoteServer;
 
    static boolean responseError(JsonObject response)
@@ -19,7 +21,11 @@ public class RemoteBus
    {
       remoteServer = new RemoteServer(hostname, port);
    }
-
+   public RemoteBus(String hostname) throws IOException
+   {
+      this(hostname, DEFAULT_PORT);
+   }
+   
    public void close() throws IOException
    {
       remoteServer.close();

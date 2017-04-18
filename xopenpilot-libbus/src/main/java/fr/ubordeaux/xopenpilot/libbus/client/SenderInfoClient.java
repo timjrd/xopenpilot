@@ -32,10 +32,13 @@ public class SenderInfoClient
    {
       return senderName;
    }
-
    public String getSenderClass()
    {
       return senderClass;
+   }
+   public int getSenderId()
+   {
+      return senderId;
    }
 
    public MessageClient getNextMessage() throws IOException
@@ -60,7 +63,7 @@ public class SenderInfoClient
 
          nextMessageId = messageId + 1;
 
-         return new MessageClient(new Date(date), content);
+         return new MessageClient(new Date(date), content, messageId);
       }
    }
 
@@ -79,10 +82,11 @@ public class SenderInfoClient
          return null;
       else
       {
-         long      date    = responseObject.getJsonNumber("date").longValue();
-         JsonValue content = responseObject.get("contents");
+         int       messageId = responseObject.getInt("msg_id");
+         long      date      = responseObject.getJsonNumber("date").longValue();
+         JsonValue content   = responseObject.get("contents");
       
-         return new MessageClient(new Date(date), content);
+         return new MessageClient(new Date(date), content, messageId);
       }
    }
 }
