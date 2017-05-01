@@ -18,12 +18,12 @@ public class RemoteServer
 
    public String send(String message) throws IOException
    {
-      System.out.println("[Client] sending message: \"" + message + "\"");
+      //System.out.println("[Client] sending message: \"" + message + "\"");
       out.write(message + "\n");
       out.flush();
 
       String response = in.readLine();
-      System.out.println("[Client] response: \"" + response + "\"");
+      //System.out.println("[Client] response: \"" + response + "\"");
       return response;
    }
    

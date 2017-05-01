@@ -16,7 +16,8 @@ public class MonitorModel
    
    private SenderInfoClient[]       senders  = new SenderInfoClient[0];
    private ArrayList<MessageClient> messages = new ArrayList<MessageClient>();
-   private MessageClient            message  = null;
+   private MessageClient            selectedMessage = null;
+   private MessageClient            lastMessage     = null;
    
    private RemoteBus bus = null;
    
@@ -40,7 +41,7 @@ public class MonitorModel
       SenderInfoClient selectedSender = null;
       if (selectedSenderId < 0)
          selectedSender = null;
-      else if (selectedSenderId == lastSelectedSender.getSenderId())
+      else if (lastSelectedSender != null && selectedSenderId == lastSelectedSender.getSenderId())
          selectedSender = lastSelectedSender;
       else
          selectedSender = findSender(selectedSenderId);
@@ -63,10 +64,12 @@ public class MonitorModel
          }
       
          /* On cherche le message sélectionné */
-         if (selectedMessageId < 0)
-            message = selectedSender.getLastMessage();
+         if (selectedMessageId >= 0)
+            selectedMessage = findMessage(selectedMessageId);
          else
-            message = findMessage(selectedMessageId);
+            selectedMessage = null;
+
+         lastMessage = selectedSender.getLastMessage();
       }
       
       /* On mémorise l'émetteur sélectionné */
@@ -115,9 +118,13 @@ public class MonitorModel
    {
       return messages;
    }
-   public MessageClient getMessage()
+   public MessageClient getSelectedMessage()
    {
-      return message;
+      return selectedMessage;
+   }
+   public MessageClient getLastMessage()
+   {
+      return lastMessage;
    }
 }
 

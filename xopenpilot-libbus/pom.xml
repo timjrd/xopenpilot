@@ -32,23 +32,45 @@
   
   <build>
     <plugins>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <executions>
-                <execution>
-                    <id>gyroscope</id>
-                    <goals>
-                        <goal>java</goal>
-                    </goals>
-                    <configuration>
-                        <mainClass>senderClient.Gyroscope</mainClass>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+
+          <execution>
+            <id>bus</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <mainClass>fr.ubordeaux.xopenpilot.bus.BusServer</mainClass>
+            </configuration>
+          </execution>
+          
+          <execution>
+            <id>gyroscope</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <mainClass>senderClient.Gyroscope</mainClass>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>monitor</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <mainClass>fr.ubordeaux.xopenpilot.monitor.Monitor</mainClass>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
     </plugins>
- </build>
- 
+  </build>
+  
 </project>

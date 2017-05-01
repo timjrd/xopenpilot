@@ -23,7 +23,7 @@ public class Server
 
       while(true)
       {
-         System.out.println("\n[Server] SELECT");
+         //System.out.println("\n[Server] SELECT");
          
          int n = selector.select();
          
@@ -35,7 +35,7 @@ public class Server
             {
                if ( key.isAcceptable() )
                {
-                  System.out.println("[Server] ACCEPT");
+                  //System.out.println("[Server] ACCEPT");
                   
                   // Incomming connection
                   SocketChannel clientSocket = serverSocket.accept();
@@ -47,7 +47,7 @@ public class Server
                }
                else if ( key.isReadable() )
                {
-                  System.out.println("[Server] READ");
+                  //System.out.println("[Server] READ");
                   
                   SocketChannel clientSocket = (SocketChannel) key.channel();
                   key.cancel();

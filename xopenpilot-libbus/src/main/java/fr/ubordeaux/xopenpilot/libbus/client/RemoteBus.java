@@ -90,8 +90,9 @@ public class RemoteBus
 
          senders.add(new SenderInfoClient(remoteServer, id, name, class_, messageId));
       }
-      
-      return (SenderInfoClient[]) senders.toArray();
+
+      SenderInfoClient[] result = new SenderInfoClient[senders.size()];
+      return senders.toArray(result);
    }
 }
 
