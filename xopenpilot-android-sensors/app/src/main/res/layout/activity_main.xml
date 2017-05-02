@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="xopenpilot.ubordeaux.fr.androidsensors.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:id="@+id/hostname"
+            android:layout_width="341dp"
+            android:layout_height="66dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Bus hostname or IP"
+            tools:layout_editor_absoluteX="-88dp"
+            tools:layout_editor_absoluteY="62dp"
+            android:layout_marginTop="44dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/connect"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:text="Connect"
+            android:onClick="onConnect"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="95dp"
+            android:layout_marginTop="28dp"
+            android:layout_below="@+id/hostname"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
