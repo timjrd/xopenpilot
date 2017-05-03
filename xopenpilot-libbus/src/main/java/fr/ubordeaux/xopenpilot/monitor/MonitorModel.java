@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class MonitorModel
 {
-   static public final int MAX_MESSAGES_SIZE        = 100;
+   static public final int MAX_MESSAGES_SIZE        = 1000;
    static public final int NEW_MESSAGES_PER_REFRESH = 30;
    
    private SenderInfoClient lastSelectedSender = null;
@@ -40,18 +40,35 @@ public class MonitorModel
       /* On cherche l'émetteur sélectionné */
       SenderInfoClient selectedSender = null;
       if (selectedSenderId < 0)
-         selectedSender = null;
-      else if (lastSelectedSender != null && selectedSenderId == lastSelectedSender.getSenderId())
-         selectedSender = lastSelectedSender;
-      else
-         selectedSender = findSender(selectedSenderId);
-      
-      
-      if (selectedSender != lastSelectedSender)
-         messages.clear();
-      
-      if (selectedSender != null)
       {
+         selectedSender = null;
+      }
+      else if ( lastSelectedSender != null
+                && selectedSenderId == lastSelectedSender.getSenderId()
+                && findSender(selectedSenderId) != null )
+      {
+         selectedSender = lastSelectedSender;
+      }
+      else
+      {
+         selectedSender = findSender(selectedSenderId);
+      }
+      
+      
+      if (selectedSender == null)
+      {
+         messages.clear();
+         selectedMessage = null;
+         lastMessage = null;
+         
+         /* On mémorise l'émetteur sélectionné */
+         lastSelectedSender = null;
+      }
+      else 
+      {
+         if (selectedSender != lastSelectedSender)
+            messages.clear();
+         
          /* On récupère les nouveaux messages */
          boolean hasNext = true;
          for (int n = 0; hasNext && n < NEW_MESSAGES_PER_REFRESH; n++)
@@ -70,10 +87,10 @@ public class MonitorModel
             selectedMessage = null;
 
          lastMessage = selectedSender.getLastMessage();
+
+         /* On mémorise l'émetteur sélectionné */
+         lastSelectedSender = selectedSender;
       }
-      
-      /* On mémorise l'émetteur sélectionné */
-      lastSelectedSender = selectedSender;
    }
    
    private SenderInfoClient findSender(int id)

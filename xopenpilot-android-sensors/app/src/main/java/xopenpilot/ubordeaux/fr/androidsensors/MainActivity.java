@@ -2,6 +2,11 @@ package xopenpilot.ubordeaux.fr.androidsensors;
 
 import fr.ubordeaux.xopenpilot.libbus.client.*;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +17,17 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity
+import javax.json.Json;
+import javax.json.JsonObject;
+
+public class MainActivity extends AppCompatActivity implements SensorEventListener
 {
     private RemoteBus bus;
     private Sender    sender;
+
+    private SensorManager sensorManager;
+    private Sensor        sensor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,7 +36,23 @@ public class MainActivity extends AppCompatActivity
         StrictMode.setThreadPolicy(policy);
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+    }
+
+    protected void onResume()
+    {
+        super.onResume();
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    protected void onPause()
+    {
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     public void onConnect(View v)
@@ -38,7 +66,7 @@ public class MainActivity extends AppCompatActivity
             try
             {
                 bus    = new RemoteBus(hostname);
-                sender = bus.registerSender("android_test", "android_test");
+                sender = bus.registerSender("Accelerometer", "android_accelerometer");
 
                 connectButton.setText("Disconnect");
             }
@@ -72,4 +100,25 @@ public class MainActivity extends AppCompatActivity
             connectButton.setText("Connect");
         }
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event)
+    {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        JsonObject contents = Json.createObjectBuilder()
+                .add("x", x)
+                .add("y", y)
+                .add("z", z)
+                .build();
+
+        if (sender != null)
+            try { sender.sendMessage(contents); } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {}
 }
