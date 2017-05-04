@@ -16,7 +16,7 @@ public class MessageHandler implements Server.MessageHandler {
 	public MessageHandler(Bus bus){
 		this.bus = bus;
 	}
-	
+	//test
 	public JsonObject ack_ok(){
 		JsonObject response = Json.createObjectBuilder()
 				.add("resp", "ok")
