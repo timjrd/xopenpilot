@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         TextView hostnameText  = (TextView) findViewById(R.id.hostname);
         String   hostname      = hostnameText.getText().toString();
 
+        //connectButton.setText("Connecting...");
+
         if (bus == null)
         {
             try

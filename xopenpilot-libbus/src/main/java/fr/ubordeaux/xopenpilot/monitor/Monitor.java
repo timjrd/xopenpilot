@@ -41,36 +41,50 @@ public class Monitor
    private JScrollPane selectedMessageScroll;
    
    
-   public void start(String hostname)
+   public void start()
    {
       SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-               try {
-                  start_(hostname);
-               }
-               catch (IOException e) {
-                  throw new RuntimeException(e);
-               }
+               start_(false);
             }});
    }
    
-   private void start_(String hostname) throws IOException
+   private void start_(boolean error)
    {
       stop_();
-      
-      model = new MonitorModel(hostname);
+
+      if (error)
+         JOptionPane.showMessageDialog(null,
+                                       "A problem occured while communicating with the bus.\nPlease make sure the bus is running, check your connection and the bus hostname.",
+                                       "Connection problem",
+                                       JOptionPane.ERROR_MESSAGE);
+
+      String hostname = (String) JOptionPane.showInputDialog(
+         null,
+         "Please enter the hostname or the IP adress of the bus:",
+         "Bus hostname",
+         JOptionPane.PLAIN_MESSAGE,
+         null,
+         null,
+         "");
+
+      if (hostname == null)
+         return;
+
+      try {
+         model = new MonitorModel(hostname);
+      }
+      catch (IOException e) {
+         start_(true); // display an error message and restart
+         return;
+      }
       
       window = new JFrame("bus monitor");
       window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
       window.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent windowEvent) {
-               try {
-                  stop_();
-               }
-               catch (IOException e) {
-                  throw new RuntimeException(e);
-               }
+               stop_();
             }});
 
       sendersPanel         = new JPanel();
@@ -118,7 +132,8 @@ public class Monitor
          model.refresh(selectedSenderId, selectedMessageId);
       }
       catch (IOException e) {
-         throw new RuntimeException(e);
+         start_(true); // display an error message and restart
+         return;
       }
 
       sendersPanel.removeAll();
@@ -316,29 +331,25 @@ public class Monitor
    {
       SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-               try {
                   stop_();
-               }
-               catch (IOException e) {
-                  throw new RuntimeException(e);
-               }
             }});
    }
 
-   private void stop_() throws IOException
+   private void stop_()
    {
       if (timer != null)
          timer.stop();
       
       if (model != null)
-         model.close();
-
+         try   { model.close(); }
+         catch (IOException e) {}
+      
       if (window != null)
          window.dispose();
    }
 
-   static public void main(String[] args) throws IOException
+   static public void main(String[] args)
    {
-      new Monitor().start("localhost");
+      new Monitor().start();
    }
 }

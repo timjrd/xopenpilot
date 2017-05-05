@@ -11,7 +11,9 @@ public class RemoteServer
    
    public RemoteServer(String hostname, int port) throws IOException, UnknownHostException
    {
-      socket = new Socket(hostname, port);
+      socket = new Socket();
+      socket.connect(new InetSocketAddress(hostname,port), 2000);
+      
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       out = new OutputStreamWriter(socket.getOutputStream());
    }
